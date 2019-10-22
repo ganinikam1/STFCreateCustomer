@@ -19,18 +19,18 @@ namespace STFCreateCustomer
         public Decimal TotalPotential { get; set; }
         public Decimal TotalCompanyPotential { get; set; }
         public Decimal TotalCompanyPotentialAlternate { get; set; }
-       // public String SegmentationScope { get; set; }
-       // public String Segmentation { get; set; }
+        // public String SegmentationScope { get; set; }
+        // public String Segmentation { get; set; }
         public Boolean Focused { get; set; }
         public String RecommendationTag { get; set; }
         public String Beat { get; set; }
-      //  public String SegmentationDisplayName { get; set; }
-      //  public String ChannelName { get; set; }
+        //  public String SegmentationDisplayName { get; set; }
+        //  public String ChannelName { get; set; }
         public String OutletName { get; set; }
-      //  public String ShopType { get; set; }
-      //  public String ShopTypeErpId { get; set; }
-       // public String OutletChannel { get; set; }
-     //   public String ChannelErpId { get; set; }
+        //  public String ShopType { get; set; }
+        //  public String ShopTypeErpId { get; set; }
+        // public String OutletChannel { get; set; }
+        //   public String ChannelErpId { get; set; }
         public String Address { get; set; }
         public String OwnersName { get; set; }
         public String OwnersNo { get; set; }
@@ -52,9 +52,16 @@ namespace STFCreateCustomer
         public String AttributeText2 { get; set; }
         public String AttributeText3 { get; set; }
 
-      //  public String SegmentationErpId { get; set; }
+        //  public String SegmentationErpId { get; set; }
 
 
 
     }
+    class clsMapRouteOutlet
+    {
+        public List<String> Outlets = new List<String>();
+         public String RouteErpId { get; set; }
+
+    }
+
 }

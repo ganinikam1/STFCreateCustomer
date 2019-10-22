@@ -37,11 +37,12 @@ namespace STFCreateCustomer
             {
                 DataTable dtCustDetails = SqlDBHelper.ExecuteSelectCommand(@"exec [sp_FA_CreateCustomer]", CommandType.Text);
 
-                List<clsCreateCustomer> customers = new List<clsCreateCustomer>();
-
                 for (int i = 0; i < dtCustDetails.Rows.Count; i++)
                 {
+                    List<clsCreateCustomer> customers = new List<clsCreateCustomer>();
+                    clsMapRouteOutlet RouteCustMap = new clsMapRouteOutlet();
                     clsCreateCustomer customer = new clsCreateCustomer();
+
                     customer.Latitude = Convert.ToDecimal(dtCustDetails.Rows[i]["Latitude"]);
                     customer.Longitude = Convert.ToDecimal(dtCustDetails.Rows[i]["Longitude"]);
                     customer.RouteErpId = dtCustDetails.Rows[i]["RouteErpId"].ToString();
@@ -83,34 +84,81 @@ namespace STFCreateCustomer
                     customer.AttributeText1 = dtCustDetails.Rows[i]["AttributeText1"].ToString();
                     customer.AttributeText2 = dtCustDetails.Rows[i]["AttributeText2"].ToString();
                     customer.AttributeText3 = dtCustDetails.Rows[i]["AttributeText3"].ToString();
-                    // customer.Segmentation = dtCustDetails.Rows[i]["Segmentation"].ToString();
-                    //  customer.SegmentationErpId = dtCustDetails.Rows[i]["SegmentationErpId"].ToString();
+
                     customers.Add(customer);
+
+
+                    RouteCustMap.Outlets.Add(dtCustDetails.Rows[i]["OutletErpId"].ToString());
+                    RouteCustMap.RouteErpId = dtCustDetails.Rows[i]["RouteErpId"].ToString();
+
+
+
+                    var jsonSerialiser = new JavaScriptSerializer();
+                    var json1 = jsonSerialiser.Serialize(customers);
+                    var json2 = jsonSerialiser.Serialize(RouteCustMap);
+                    JsonString = json1;
+                    ASCIIEncoding encoder = new ASCIIEncoding();
+                    byte[] data = encoder.GetBytes(json1);
+                    byte[] data1 = encoder.GetBytes(json2);
+
+                    File.AppendAllText(Application.StartupPath + @"\" + DateTime.Now.ToString("ddMMyy_hhmm") + ".txt", json1);
+
+                    HttpWebRequest request = WebRequest.Create("http://api.fieldassist.in/api/V3/Outlet/CreateMultiple") as HttpWebRequest;
+                    request.Credentials = new System.Net.NetworkCredential("Raw10550", "W8)ke4eeXtmrllfehe1l");
+                    // HttpWebRequest request = WebRequest.Create("http://api-debug.fieldassist.in/api/V3/Outlet/CreateMultiple") as HttpWebRequest;
+                    //  request.Credentials = new System.Net.NetworkCredential("RAW_Chitransh", "9vf_1nue^T&z2Avb_rUe");
+
+
+                    HttpWebRequest request1 = WebRequest.Create("http://api.fieldassist.in/api/V3/EmployeeJourney/UpdateRouteOutlet") as HttpWebRequest;
+                    request1.Credentials = new System.Net.NetworkCredential("Raw10550", "W8)ke4eeXtmrllfehe1l");
+
+                    request.Method = "POST";
+                    request.ContentType = "application/json";
+                    request.ContentLength = data.Length;
+                    request.GetRequestStream().Write(data, 0, data.Length);
+
+                    request1.Method = "POST";
+                    request1.ContentType = "application/json";
+                    request1.ContentLength = data1.Length;
+                    request1.GetRequestStream().Write(data1, 0, data1.Length);
+
                 }
 
 
-                var jsonSerialiser = new JavaScriptSerializer();
-                var json1 = jsonSerialiser.Serialize(customers);
-                JsonString = json1;
-                ASCIIEncoding encoder = new ASCIIEncoding();
-                byte[] data = encoder.GetBytes(json1);
+                //var jsonSerialiser = new JavaScriptSerializer();
+                //var json1 = jsonSerialiser.Serialize(customers);
+                //var json2 = jsonSerialiser.Serialize(RouteCustMap);
+                //JsonString = json1;
+                //ASCIIEncoding encoder = new ASCIIEncoding();
+                //byte[] data = encoder.GetBytes(json1);
+                //byte[] data1 = encoder.GetBytes(json2);
 
-                File.AppendAllText(Application.StartupPath + @"\" + DateTime.Now.ToString("ddMMyy_hhmm") + ".txt", json1);
+                //File.AppendAllText(Application.StartupPath + @"\" + DateTime.Now.ToString("ddMMyy_hhmm") + ".txt", json1);
 
-               // HttpWebRequest request = WebRequest.Create("http://api.fieldassist.in/api/V3/Outlet/CreateMultiple") as HttpWebRequest;
+                //HttpWebRequest request = WebRequest.Create("http://api.fieldassist.in/api/V3/Outlet/CreateMultiple") as HttpWebRequest;
                 //request.Credentials = new System.Net.NetworkCredential("Raw10550", "W8)ke4eeXtmrllfehe1l");
-                HttpWebRequest request = WebRequest.Create("http://api-debug.fieldassist.in/api/V3/Outlet/CreateMultiple") as HttpWebRequest;
-                 request.Credentials = new System.Net.NetworkCredential("RAW_Chitransh", "9vf_1nue^T&z2Avb_rUe");
+                //// HttpWebRequest request = WebRequest.Create("http://api-debug.fieldassist.in/api/V3/Outlet/CreateMultiple") as HttpWebRequest;
+                ////  request.Credentials = new System.Net.NetworkCredential("RAW_Chitransh", "9vf_1nue^T&z2Avb_rUe");
 
-                request.Method = "POST";
-                request.ContentType = "application/json";
-                request.ContentLength = data.Length;
-                request.GetRequestStream().Write(data, 0, data.Length);
 
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                //HttpWebRequest request1 = WebRequest.Create("http://api.fieldassist.in/api/V3/EmployeeJourney/UpdateRouteOutlet") as HttpWebRequest;
+                //request1.Credentials = new System.Net.NetworkCredential("Raw10550", "W8)ke4eeXtmrllfehe1l");
 
-                response.Close();
-                response.Dispose();
+
+                //request.Method = "POST";
+                //request.ContentType = "application/json";
+                //request.ContentLength = data.Length;
+                //request.GetRequestStream().Write(data, 0, data.Length);
+
+                //request1.Method = "POST";
+                //request1.ContentType = "application/json";
+                //request1.ContentLength = data1.Length;
+                //request1.GetRequestStream().Write(data1, 0, data1.Length);
+
+
+                //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                //response.Close();
+                //response.Dispose();
 
 
 
