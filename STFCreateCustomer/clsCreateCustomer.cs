@@ -57,10 +57,26 @@ namespace STFCreateCustomer
 
 
     }
+
+    class clsUpdateCustomer
+
+    {
+        public String OutletErpId { get; set; }
+        public String Beat { get; set; }
+        public String OutletName { get; set; }
+        public String Address { get; set; }
+        public String GSTIN { get; set; }
+        public String Email { get; set; }
+        public String PinCode { get; set; }
+        public String MarketName { get; set; }
+        public String City { get; set; }
+        public Boolean GSTRegistered { get; set; }
+
+    }
     class clsMapRouteOutlet
     {
         public List<String> Outlets = new List<String>();
-         public String RouteErpId { get; set; }
+        public String RouteErpId { get; set; }
 
     }
 
