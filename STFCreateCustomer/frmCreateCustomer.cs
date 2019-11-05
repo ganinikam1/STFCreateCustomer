@@ -125,6 +125,14 @@ namespace STFCreateCustomer
                         request1.ContentLength = data1.Length;
                         request1.GetRequestStream().Write(data1, 0, data1.Length);
 
+                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                        HttpWebResponse response1 = (HttpWebResponse)request1.GetResponse();
+
+                        response.Close();
+                        response.Dispose();
+                        response1.Close();
+                        response1.Dispose();
+
                     }
                 }
 
@@ -140,11 +148,12 @@ namespace STFCreateCustomer
                 }
 
 
-                try
-                {
-                    DataTable dtUpdateCustDetails = SqlDBHelper.ExecuteSelectCommand(@"exec [sp_FA_CreateCustomer] 'Update'", CommandType.Text);
+                DataTable dtUpdateCustDetails = SqlDBHelper.ExecuteSelectCommand(@"exec [sp_FA_CreateCustomer] 'Update'", CommandType.Text);
 
-                    for (int i = 0; i < dtUpdateCustDetails.Rows.Count; i++)
+                for (int i = 0; i < dtUpdateCustDetails.Rows.Count; i++)
+                {
+
+                    try
                     {
                         List<clsUpdateCustomer> customers = new List<clsUpdateCustomer>();
                         clsMapRouteOutlet RouteCustMap = new clsMapRouteOutlet();
@@ -202,21 +211,30 @@ namespace STFCreateCustomer
                         request1.ContentLength = data1.Length;
                         request1.GetRequestStream().Write(data1, 0, data1.Length);
 
+                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                        HttpWebResponse response1 = (HttpWebResponse)request1.GetResponse();
+
+                        response.Close();
+                        response.Dispose();
+                        response1.Close();
+                        response1.Dispose();
+
                     }
-
-                }
-
-                catch (Exception e2)
-                {
-                    WriteErrorLog(e2.Message + Environment.NewLine + JsonString);
-                    String Query = @"USE msdb  exec sp_send_DBMail 
+                    catch (Exception e2)
+                    {
+                        WriteErrorLog(e2.Message + Environment.NewLine + JsonString);
+                        String Query = @"USE msdb  exec sp_send_DBMail 
 @profile_name = 'MISMails',
 @recipients = 'ganesh.nikam@rawpressery.com;deepa@rawpressery.com',
 @subject = 'FA Customer Updation Failed',
 @body = ' Dear Team," + Environment.NewLine + " Please find below Error msg " + Environment.NewLine + e2.Message + Environment.NewLine + JsonString + "'";
-                    SqlDBHelper.ExecuteNonQuery(Query, CommandType.Text);
+                        SqlDBHelper.ExecuteNonQuery(Query, CommandType.Text);
+
+                    }
+
 
                 }
+
 
 
 
