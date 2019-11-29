@@ -80,4 +80,31 @@ namespace STFCreateCustomer
 
     }
 
+
+    public class clsResponseList
+    {
+        public String  ERPId { get; set; }
+        public String Message { get; set; }
+        public String ResponseStatus { get; set; }
+        public string GUID { get; set; }
+        
+    }
+
+   public  class clsResponse
+    {
+        public String Message { get; set; }
+        public List<clsResponseList> ResponseList = new List<clsResponseList>();
+        public String Response { get; set; }
+        
+
+
+
+
+
+    }
+
+
+
+
+
 }
